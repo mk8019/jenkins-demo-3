@@ -1,0 +1,35 @@
+pipeline{
+  agent any
+
+  environment{
+      Release = '20.04'
+  }
+
+  stages{
+    stage('build'){
+      agent any
+      environment{
+        LOG_LEVEL='INFO'
+      }
+      steps{
+        echo "Building release ${Release} with log level ${LOG_LEVEL}..."
+      }
+    }
+    stage('Test'){
+      steps{
+        echo "Testing release ${Release}"
+      }
+    }
+    stage('Deploy'){
+        input {
+            message 'Deploy?'
+            ok 'Do it!'
+            parameters{
+                string(name: 'TARGET_ENVIRONMENT', defaultValue: 'PROD', description: 'Target deployment environment')
+            }
+    }
+    }
+
+  }
+
+}
