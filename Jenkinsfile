@@ -15,7 +15,7 @@ pipeline{
         echo "Building release ${Release} with log level ${LOG_LEVEL}..."
       }
     }
-    stage("Test"){
+    stage('Test'){
       steps{
         "Testing. I cna see the release ${Release} but not the log level ${LOG_LEVEL}"
       }
