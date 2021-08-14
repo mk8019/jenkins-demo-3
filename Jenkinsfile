@@ -17,7 +17,7 @@ pipeline{
     }
     stage('Test'){
       steps{
-        "Testing. I cna see the release ${Release} but not the log level ${LOG_LEVEL}"
+        echo "Testing. I cna see the release ${Release} but not the log level ${LOG_LEVEL}"
       }
     }
     
