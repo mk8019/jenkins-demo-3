@@ -28,7 +28,7 @@ pipeline{
     success{
         archiveArtifacts 'test-results.txt'
         slackSend channel: '#jenkins-message',
-                  message: "Release $(env.Release), success: $(currentBuild.fullDisplayName)."
+                  message: "Release ${env.Release}, success: ${currentBuild.fullDisplayName}."
     }
   }
 }
