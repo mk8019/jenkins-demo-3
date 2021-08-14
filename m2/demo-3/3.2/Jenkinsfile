@@ -1,10 +1,8 @@
 pipeline{
   agent any
-
   environment{
       Release = '20.04'
   }
-
   stages{
     stage('build'){
       environment{
@@ -12,6 +10,11 @@ pipeline{
       }
       steps{
         echo "Building release ${Release} with log level ${LOG_LEVEL}..."
+        sh 'chmod +x m2/demo3/build.sh'
+        withCredentials([string(credentialId: 'an-api-key', variable: 'API_KEY')])
+        sh '''
+            ./m2/demo3/build.sh
+           '''
       }
     }
     stage('Test'){
