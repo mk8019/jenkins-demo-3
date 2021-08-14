@@ -30,10 +30,6 @@ pipeline{
                             }
                         }
       }
-
-      steps{
-        echo "Building release ${Release} with log level ${LOG_LEVEL}..."
-      }
     }
     stage('Test'){
       steps{
