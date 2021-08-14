@@ -13,7 +13,7 @@ pipeline{
         sh 'chmod +x m2/demo3/build.sh'
         withCredentials([string(credentialId: 'an-api-key', variable: 'API_KEY')])
         sh '''
-            ./m2/demo3/build.sh
+            ./m2/demo3/3.2/build.sh
            '''
       }
     }
@@ -27,6 +27,8 @@ pipeline{
   post{
     success{
         archiveArtifacts 'test-results.txt'
+        slackSend channel: '#jenkins-message',
+                  message: "Release $(env.Release), success: $(currentBuild.fullDisplayName)."
     }
   }
 }
