@@ -1,0 +1,40 @@
+pipeline{
+    agent any
+    environment{
+    VERSION = "0.1.0"
+    VERSION_RC = "rc.2"
+    }
+    stages{
+        stage('Audit tools'){
+            steps{
+                sh '''
+                    git version
+                    docker version
+                    dotnet --list-sdks
+                    dotnet --list-runtimes
+                '''
+            }
+        }
+        stage('build'){
+            steps{
+                echo "Building version: ${VERSION} with suffix: ${VERSION_RC}"
+                sh 'dotnet build -p:VersionPrefix="${VERSION}" --version-suffix "${VERSION_RC}" ./m2/src/Pi.Web/Pi.Web.csproj'
+            }
+        }
+        stage('Unit Test'){
+            steps{
+                dir('./m2/src'){
+                    sh '''
+                        dotnet test --logger "try;LogFileName=Pi.Math.trx" Pi.Math.Tests/Pi.Math.Tests.csproj
+                    '''
+                    mstest testResultFile:"**/*.trx", keepLongStdio: true
+                }
+            }
+        }
+        stage('smoke test'){
+            steps{
+                sh 'dotnet ./m2/src/Pi.Web/bin/Debug/netcoreapp3.1/Pi.Web.dll'
+            }
+        }
+    }
+}
